@@ -17,7 +17,7 @@ class ScreenTemp extends StatelessWidget {
         ),
         items: [
           IntroductionSliderItem(
-            logo: Image.asset('assets/onBoard-1.jpg'),
+            logo: Image.asset('assets/onBoard-1.png'),
             title: const Text(
               "Work more effectively",
               style: TextStyle(
@@ -42,7 +42,7 @@ class ScreenTemp extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
           IntroductionSliderItem(
-            logo: Image.asset('assets/onBoard-1.jpg'),
+            logo: Image.asset('assets/onBoard-2.png'),
             title: const Text(
               "Optimize every task",
               style: TextStyle(
@@ -50,24 +50,27 @@ class ScreenTemp extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                   fontStyle: FontStyle.normal,
-                  fontSize: 24),
+                  fontSize: 32),
             ),
             subtitle: const SizedBox(
-              width: 250,
-              child: Text(
-                "Get a clear overview of your daily, weekly, and monthly tasks, and adjust your plans accordingly.",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontSize: 15,
+              width: 300,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Get a clear overview of your daily, weekly, and monthly tasks, and adjust your plans accordingly.",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Open Sans',
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
             backgroundColor: Colors.white,
           ),
           IntroductionSliderItem(
-            logo: Image.asset('assets/onBoard-1.jpg'),
+            logo: Image.asset('assets/onBoard-3.png'),
             title: const Text(
               "Elevate your productivity",
               style: TextStyle(
