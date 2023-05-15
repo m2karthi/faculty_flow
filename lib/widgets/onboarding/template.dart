@@ -1,4 +1,5 @@
 import 'package:faculty_flow/screens/home.dart';
+import 'package:faculty_flow/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_slider/introduction_slider.dart';
 
@@ -25,17 +26,20 @@ class ScreenTemp extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                   fontStyle: FontStyle.normal,
-                  fontSize: 24),
+                  fontSize: 32),
             ),
             subtitle: const SizedBox(
-              width: 250,
-              child: Text(
-                "Efficiently manage all your tasks in one place, so you can spend more time on what really matters to you.",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontSize: 15,
+              width: 300,
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  "Efficiently manage all your tasks in one place, so you can spend more time on what really matters to you.",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Open Sans',
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
@@ -78,17 +82,20 @@ class ScreenTemp extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                   fontStyle: FontStyle.normal,
-                  fontSize: 24),
+                  fontSize: 32),
             ),
             subtitle: const SizedBox(
-              width: 250,
-              child: Text(
-                "Maximize your productivity and achieve your goals with our optimized task management app.",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontSize: 15,
+              width: 300,
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  "Maximize your productivity and achieve your goals with our optimized task management app.",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Open Sans',
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
@@ -126,7 +133,7 @@ class ScreenTemp extends StatelessWidget {
           ),
           curve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 350),
-          home: const HomeScreen(),
+          home: NavBar(),
         ),
         // back: const Back(child: Icon(Icons.arrow_back)),
       ),

@@ -1,3 +1,4 @@
+import 'package:faculty_flow/screens/home.dart';
 import 'package:faculty_flow/widgets/onboarding/template.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: ScreenTemp(),
+      // home: HomeScreen()
     );
   }
 }
