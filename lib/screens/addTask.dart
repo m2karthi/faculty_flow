@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class AddTaskPage extends StatefulWidget {
   @override
@@ -7,43 +8,78 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   String _selectedType = 'Personal';
-  List<String> _selectedTags = [];
+  String _selectedTag = 'Urgent';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedStartTime = TimeOfDay.now();
+  TimeOfDay _selectedEndTime = TimeOfDay.now();
 
   @override
   void dispose() {
     _titleController.dispose();
-    _dateController.dispose();
-    _startTimeController.dispose();
-    _endTimeController.dispose();
     _descriptionController.dispose();
     super.dispose();
+  }
+
+  void _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    }
+  }
+
+  void _selectStartTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _selectedStartTime,
+    );
+
+    if (pickedTime != null && pickedTime != _selectedStartTime) {
+      setState(() {
+        _selectedStartTime = pickedTime;
+      });
+    }
+  }
+
+  void _selectEndTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _selectedEndTime,
+    );
+
+    if (pickedTime != null && pickedTime != _selectedEndTime) {
+      setState(() {
+        _selectedEndTime = pickedTime;
+      });
+    }
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Perform the task submission logic here
-      // Access the entered values using the text controllers
+      // Access the entered values using the text controllers and selected values
       String title = _titleController.text;
-      String date = _dateController.text;
-      String startTime = _startTimeController.text;
-      String endTime = _endTimeController.text;
       String description = _descriptionController.text;
 
-      // Print the entered values (You can replace this with your logic)
+      // Print the entered values (Replace with your own logic)
       print('Title: $title');
-      print('Date: $date');
-      print('Start Time: $startTime');
-      print('End Time: $endTime');
       print('Description: $description');
+      print('Date: $_selectedDate');
+      print('Start Time: $_selectedStartTime');
+      print('End Time: $_selectedEndTime');
       print('Type: $_selectedType');
-      print('Tags: $_selectedTags');
+      print('Tag: $_selectedTag');
     }
   }
 
@@ -72,51 +108,27 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  labelText: 'Date',
+              ListTile(
+                leading: Icon(Icons.calendar_today),
+                title: Text('Date'),
+                subtitle: Text(
+                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a date';
-                  }
-                  return null;
-                },
+                onTap: () => _selectDate(context),
               ),
               SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _startTimeController,
-                      decoration: InputDecoration(
-                        labelText: 'Start Time',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter a start time';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 16.0),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _endTimeController,
-                      decoration: InputDecoration(
-                        labelText: 'End Time',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter an end time';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
+              ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('Start Time'),
+                subtitle: Text(_selectedStartTime.format(context)),
+                onTap: () => _selectStartTime(context),
+              ),
+              SizedBox(height: 16.0),
+              ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('End Time'),
+                subtitle: Text(_selectedEndTime.format(context)),
+                onTap: () => _selectEndTime(context),
               ),
               SizedBox(height: 16.0),
               TextFormField(
@@ -132,7 +144,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 },
               ),
               SizedBox(height: 16.0),
-                           Text(
+              Text(
                 'Type',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
               ),
@@ -169,44 +181,45 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Wrap(
                 spacing: 8.0,
                 children: [
-                  FilterChip(
+                  ChoiceChip(
                     label: Text('Urgent'),
-                    selected: _selectedTags.contains('Urgent'),
+                    selected: _selectedTag == 'Urgent',
                     onSelected: (selected) {
                       setState(() {
-                        if (selected) {
-                          _selectedTags.add('Urgent');
-                        } else {
-                          _selectedTags.remove('Urgent');
-                        }
+                        _selectedTag = 'Urgent';
                       });
                     },
+                    selectedColor: Colors.red,
                   ),
-                  FilterChip(
-                    label: Text('Important'),
-                    selected: _selectedTags.contains('Important'),
+                  ChoiceChip(
+                    label: Text('High'),
+                    selected: _selectedTag == 'High',
                     onSelected: (selected) {
                       setState(() {
-                        if (selected) {
-                          _selectedTags.add('Important');
-                        } else {
-                          _selectedTags.remove('Important');
-                        }
+                        _selectedTag = 'High';
                       });
                     },
+                    selectedColor: Colors.orange,
                   ),
-                  FilterChip(
-                    label: Text('EOD'),
-                    selected: _selectedTags.contains('EOD'),
+                  ChoiceChip(
+                    label: Text('Normal'),
+                    selected: _selectedTag == 'Normal',
                     onSelected: (selected) {
                       setState(() {
-                        if (selected) {
-                          _selectedTags.add('EOD');
-                        } else {
-                          _selectedTags.remove('EOD');
-                        }
+                        _selectedTag = 'Normal';
                       });
                     },
+                    selectedColor: Colors.green,
+                  ),
+                  ChoiceChip(
+                    label: Text('Low'),
+                    selected: _selectedTag == 'Low',
+                    onSelected: (selected) {
+                      setState(() {
+                        _selectedTag = 'Low';
+                      });
+                    },
+                    selectedColor: Colors.blue,
                   ),
                 ],
               ),
@@ -222,4 +235,3 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 }
-

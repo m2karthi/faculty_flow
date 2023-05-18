@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../pallets/color.dart';
+import '../widgets/taskcard.dart';
 // import '../widgets/taskcard.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -67,8 +68,48 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    print(
+                        "dddsccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+                    // Navigator.pushNamed(context, '/tasksbystatus')
+                  },
+                  child: Card(
+                      color: Color(0xFF7DC8E7),
+                      elevation: 8,
+                      child: Container(
+                        width: 160,
+                        height: 158,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage('assets/onBoard-2.png'),
+                              ),
+                              Text(
+                                "Completed",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: Color(0xFF12175E),
+                                ),
+                              ),
+                              Text(
+                                "16 Tasks",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Color(0xFF12175E),
+                                ),
+                              ),
+                            ]),
+                      )),
+                ),
                 Card(
-                    color: Color(0xFF7DC8E7),
+                    color: Color(0xFF7D88E7),
                     elevation: 8,
                     child: Container(
                       width: 160,
@@ -83,11 +124,11 @@ class HomeScreen extends StatelessWidget {
                                   AssetImage('assets/onBoard-2.png'),
                             ),
                             Text(
-                              "Completed",
+                              "Pending",
                               style: GoogleFonts.hindSiliguri(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18,
-                                color: Color(0xFF12175E),
+                                color: Colors.white,
                               ),
                             ),
                             Text(
@@ -95,40 +136,7 @@ class HomeScreen extends StatelessWidget {
                               style: GoogleFonts.hindSiliguri(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
-                                color: Color(0xFF12175E),
-                              ),
-                            ),
-                          ]),
-                    )),
-                Card(
-                    color: Color(0xFF7DC8E7),
-                    elevation: 8,
-                    child: Container(
-                      width: 160,
-                      height: 158,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/onBoard-2.png'),
-                            ),
-                            Text(
-                              "Completed",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: Color(0xFF12175E),
-                              ),
-                            ),
-                            Text(
-                              "16 Tasks",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Color(0xFF12175E),
+                                color: Colors.white,
                               ),
                             ),
                           ]),
@@ -143,7 +151,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Card(
-                    color: Color(0xFF7DC8E7),
+                    color: Color(0xFFE77D7D),
                     elevation: 8,
                     child: Container(
                       width: 160,
@@ -158,11 +166,11 @@ class HomeScreen extends StatelessWidget {
                                   AssetImage('assets/onBoard-2.png'),
                             ),
                             Text(
-                              "Completed",
+                              "Cancelled",
                               style: GoogleFonts.hindSiliguri(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18,
-                                color: Color(0xFF12175E),
+                                color: Colors.white,
                               ),
                             ),
                             Text(
@@ -170,13 +178,13 @@ class HomeScreen extends StatelessWidget {
                               style: GoogleFonts.hindSiliguri(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
-                                color: Color(0xFF12175E),
+                                color: Colors.white,
                               ),
                             ),
                           ]),
                     )),
                 Card(
-                    color: Color(0xFF7DC8E7),
+                    color: Color(0xFF81E89E),
                     elevation: 8,
                     child: Container(
                       width: 160,
@@ -191,7 +199,7 @@ class HomeScreen extends StatelessWidget {
                                   AssetImage('assets/onBoard-2.png'),
                             ),
                             Text(
-                              "Completed",
+                              "On Request",
                               style: GoogleFonts.hindSiliguri(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18,
@@ -214,6 +222,7 @@ class HomeScreen extends StatelessWidget {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Today Tasks",
@@ -223,14 +232,45 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/tasks');
+                  },
+                  child: Text('View All'),
+                ),
               ],
             ),
-            // TaskCard(
-            //   title: 'Complete Assignment',
-            //   duration: '1 hour',
-            //   label: 'Urgent',
-            //   labelColor: Colors.red,
-            // ),
+            Expanded(
+              child: ListView(
+                // padding: EdgeInsets.all(16.0),
+                children: [
+                  TaskCard(
+                    label: 'Urgent',
+                    title: 'Complete Project Report',
+                    startTime: '9:00 AM',
+                    endTime: '11:30 AM',
+                  ),
+                  TaskCard(
+                    label: 'High',
+                    title: 'Meeting with Team',
+                    startTime: '2:00 PM',
+                    endTime: '3:00 PM',
+                  ),
+                  TaskCard(
+                    label: 'Normal',
+                    title: 'Send Progress Update',
+                    startTime: '4:30 PM',
+                    endTime: '5:00 PM',
+                  ),
+                  TaskCard(
+                    label: 'Low',
+                    title: 'Organize Files',
+                    startTime: '6:00 PM',
+                    endTime: '7:00 PM',
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

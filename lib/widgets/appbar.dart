@@ -2,6 +2,7 @@ import 'package:faculty_flow/screens/addTask.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// import '../screens/TasksByStatusPage.dart';
 import '../screens/home.dart';
 
 class NavBar extends StatefulWidget {
@@ -17,6 +18,7 @@ class _NavBarState extends State<NavBar> {
   List<Widget> pages =  [
     HomeScreen(),
     AddTaskPage(),
+    // TasksByStatusPage(),
     
 
   ];
