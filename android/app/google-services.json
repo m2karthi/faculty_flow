@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "848303071225",
+    "project_id": "faculty-flow",
+    "storage_bucket": "faculty-flow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848303071225:android:aa92de92f0cd749caaa728",
+        "android_client_info": {
+          "package_name": "com.example.faculty_flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848303071225-78pp58c8el1eeg8e3e9g9uvjubpbh0p0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXLX2rKnTdE9ipt3YMqgTG8oFaOi-sGGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848303071225-78pp58c8el1eeg8e3e9g9uvjubpbh0p0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

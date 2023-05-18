@@ -1,4 +1,7 @@
 import 'package:faculty_flow/screens/addTask.dart';
+import 'package:faculty_flow/screens/appointment.dart';
+import 'package:faculty_flow/screens/calender.dart';
+import 'package:faculty_flow/screens/journal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +20,10 @@ class _NavBarState extends State<NavBar> {
     int currentPage = 0;
   List<Widget> pages =  [
     HomeScreen(),
+    MeetingPage(),
     AddTaskPage(),
+    Calender(),
+    JournalPage()
     // TasksByStatusPage(),
     
 
