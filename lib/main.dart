@@ -3,11 +3,19 @@ import 'package:faculty_flow/screens/home.dart';
 import 'package:faculty_flow/widgets/onboarding/template.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 import 'screens/tasks.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+ WidgetsFlutterBinding.ensureInitialized();
+  await initializeFirebase();
+  runApp(MyApp());
+}
+
+Future<void> initializeFirebase() async {
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
