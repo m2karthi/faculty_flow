@@ -1,5 +1,7 @@
+import 'package:faculty_flow/screens/auth/login.dart';
 import 'package:faculty_flow/screens/home.dart';
 import 'package:faculty_flow/widgets/appbar.dart';
+import 'package:faculty_flow/screens/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_slider/introduction_slider.dart';
 
@@ -133,7 +135,8 @@ class ScreenTemp extends StatelessWidget {
           ),
           curve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 350),
-          home: NavBar(),
+          // home: NavBar(),
+          home: LoginPage(),
         ),
         // back: const Back(child: Icon(Icons.arrow_back)),
       ),
