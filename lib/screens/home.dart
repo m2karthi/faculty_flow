@@ -241,34 +241,39 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             Expanded(
-              child: ListView(
-                // padding: EdgeInsets.all(16.0),
-                children: [
-                  TaskCard(
-                    label: 'Urgent',
-                    title: 'Complete Project Report',
-                    startTime: '9:00 AM',
-                    endTime: '11:30 AM',
-                  ),
-                  TaskCard(
-                    label: 'High',
-                    title: 'Meeting with Team',
-                    startTime: '2:00 PM',
-                    endTime: '3:00 PM',
-                  ),
-                  TaskCard(
-                    label: 'Normal',
-                    title: 'Send Progress Update',
-                    startTime: '4:30 PM',
-                    endTime: '5:00 PM',
-                  ),
-                  TaskCard(
-                    label: 'Low',
-                    title: 'Organize Files',
-                    startTime: '6:00 PM',
-                    endTime: '7:00 PM',
-                  ),
-                ],
+              child: Container(
+                      height: 200,
+
+                child: ListView(
+                  shrinkWrap: true,
+                  // padding: EdgeInsets.all(16.0),
+                  children: [
+                    TaskCard(
+                      label: 'Urgent',
+                      title: 'Complete Project Report',
+                      startTime: '9:00 AM',
+                      endTime: '11:30 AM',
+                    ),
+                    TaskCard(
+                      label: 'High',
+                      title: 'Meeting with Team',
+                      startTime: '2:00 PM',
+                      endTime: '3:00 PM',
+                    ),
+                    TaskCard(
+                      label: 'Normal',
+                      title: 'Send Progress Update',
+                      startTime: '4:30 PM',
+                      endTime: '5:00 PM',
+                    ),
+                    TaskCard(
+                      label: 'Low',
+                      title: 'Organize Files',
+                      startTime: '6:00 PM',
+                      endTime: '7:00 PM',
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

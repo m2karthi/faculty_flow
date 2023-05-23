@@ -22,7 +22,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       formState.save();
 
       try {
-        // await FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
         showDialog(
           context: context,
           builder: (BuildContext context) {
