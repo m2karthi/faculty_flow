@@ -1,3 +1,5 @@
+import 'package:faculty_flow/services/profile.service.dart';
+import 'package:faculty_flow/services/task.service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,10 +7,38 @@ import '../pallets/color.dart';
 import '../widgets/taskcard.dart';
 // import '../widgets/taskcard.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  ProfileService _profileService = ProfileService();
+  TaskService _taskService = TaskService();
+
+  String _userName = '';
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfile();
+  }
+
+  Future<void> _fetchProfile() async {
+    // String uid = ''; // Get the current user's UID
+
+    try {
+      Map<String, dynamic> profileData = await _profileService.getProfile();
+
+      setState(() {
+        _userName = profileData['firstName'];
+      });
+    } catch (e) {
+      print('Error fetching profile: $e');
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -29,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hi, Kishore",
+                        "Hi, $_userName",
                         style: GoogleFonts.hindSiliguri(
                           fontWeight: FontWeight.w600,
                           fontSize: 29,
@@ -240,42 +270,66 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
-              child: Container(
-                      height: 200,
 
-                child: ListView(
-                  shrinkWrap: true,
-                  // padding: EdgeInsets.all(16.0),
-                  children: [
-                    TaskCard(
-                      label: 'Urgent',
-                      title: 'Complete Project Report',
-                      startTime: '9:00 AM',
-                      endTime: '11:30 AM',
-                    ),
-                    TaskCard(
-                      label: 'High',
-                      title: 'Meeting with Team',
-                      startTime: '2:00 PM',
-                      endTime: '3:00 PM',
-                    ),
-                    TaskCard(
-                      label: 'Normal',
-                      title: 'Send Progress Update',
-                      startTime: '4:30 PM',
-                      endTime: '5:00 PM',
-                    ),
-                    TaskCard(
-                      label: 'Low',
-                      title: 'Organize Files',
-                      startTime: '6:00 PM',
-                      endTime: '7:00 PM',
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            SingleChildScrollView(
+              child: FutureBuilder(
+                  future: _taskService.getTodayTasks(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Display a loading spinner while waiting for data
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      // Display an error message if the future throws an error
+                      return Text("Error: ${snapshot.error}");
+                    } else {
+                      print("SNapshot $snapshot");
+                      print("SNapshot data ${snapshot.data} ");
+                      // print("index SNapshot data  ${snapshot.data[0]} ");
+                      // var tasksData = snapshot.data;
+                      // print("Tasks data ${tasksData['title']}");
+
+
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 200,
+                            width: double.infinity,
+                            child: ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var taskdata = snapshot.data[index];
+                                  return TaskCard(
+                                      label: taskdata['tag'],
+                                      title: taskdata['title'],
+                                      startTime: taskdata['startTime'],
+                                      endTime: taskdata['endTime']);
+                                }),
+                          )
+                        ],
+                      );
+                    }
+                  }),
+            )
+
+            // Expanded(
+            //   child: Container(
+            //     height: 200,
+            //     child: ListView(
+            //       shrinkWrap: true,
+            //       // padding: EdgeInsets.all(16.0),
+            //       children: [
+            // TaskCard(
+            //   label: 'Urgent',
+            //   title: 'Complete Project Report',
+            //   startTime: '9:00 AM',
+            //   endTime: '11:30 AM',
+            // ),
+
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

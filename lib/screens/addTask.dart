@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../services/task.service.dart';
+import '../widgets/appbar.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -53,31 +54,61 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  void _selectStartTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: _selectedStartTime,
-    );
+    void _selectStartTime(BuildContext context) async {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: _selectedStartTime,
+      );
 
-    if (pickedTime != null && pickedTime != _selectedStartTime) {
-      setState(() {
-        _selectedStartTime = pickedTime;
-      });
+      if (pickedTime != null && pickedTime != _selectedStartTime) {
+        setState(() {
+          _selectedStartTime = pickedTime;
+        });
+      }
     }
-  }
 
-  void _selectEndTime(BuildContext context) async {
+    void _selectEndTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: _selectedEndTime,
     );
 
     if (pickedTime != null && pickedTime != _selectedEndTime) {
+      // Check if the selected end time is greater than or equal to the selected start time
+      if (_selectedStartTime != null &&
+          (pickedTime.hour < _selectedStartTime!.hour ||
+              (pickedTime.hour == _selectedStartTime!.hour &&
+                  pickedTime.minute < _selectedStartTime!.minute))) {
+                    // Reset the end time
+        setState(() {
+          _selectedEndTime = _selectedStartTime;
+        });
+        // Display an error message or handle the invalid selection
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Time Selection'),
+              content: Text(
+                  'The selected end time must be greater than or equal to the start time.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return; // Exit the function without updating the selected end time
+      }
+
       setState(() {
         _selectedEndTime = pickedTime;
       });
     }
   }
+
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -110,12 +141,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
         status = 'Pending';
       }
 
+      String convertTimeOfDayToString(TimeOfDay timeOfDay) {
+        final hour = timeOfDay.hour.toString().padLeft(2, '0');
+        final minute = timeOfDay.minute.toString().padLeft(2, '0');
+        return '$hour:$minute';
+      }
+      
+      var taskId = '${title}_${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}';
+
+
       var taskDetails = {
+        'id': taskId,
         'title': title,
         'description': description,
         'date': _selectedDate,
-        'startTime': _selectedStartTime,
-        'endTime': _selectedEndTime,
+        'startTime': convertTimeOfDayToString(_selectedStartTime),
+        'endTime': convertTimeOfDayToString(_selectedEndTime),
         'type': _selectedType,
         'tag': _selectedTag,
         'createdAt': DateTime.now(),
@@ -124,8 +165,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
       print("TaskDetails $taskDetails");
       await taskService.addTask(taskDetails).then((_) {
-        // Task added successfully, perform any additional actions
+        // Task added successfully, perform any additional action
+         // Clear the task details after adding the task
+        setState(() {
+          _titleController.clear();
+          _descriptionController.clear();
+          _selectedDate = DateTime.now();
+          _selectedStartTime = TimeOfDay(hour: 0, minute: 0);
+          _selectedEndTime = TimeOfDay(hour: 0, minute: 0);
+          _selectedType = 'Personal';
+          _selectedTag = 'Urgent';
+        });
         print('Task added successfully');
+         Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavBar()),
+        );
       }).catchError((error) {
         // Error occurred while adding task, handle the error
         print('Error adding task: $error');

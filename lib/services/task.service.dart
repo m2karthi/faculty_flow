@@ -5,7 +5,37 @@ class TaskService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> addTask( taskDetails) async {
+//* * * * * * * * * * * * * * * Get Todays Task *************
+  Future getTodayTasks() async {
+    try {
+      // Get the current user's ID
+      final User? currentUser = _auth.currentUser;
+      final String? userId = currentUser?.uid;
+      print("Todays Task getTodayTasksgetTodayTasksgetTodayTasks $userId");
+
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('tasks').doc(userId).get();
+
+      if (!snapshot.exists) {
+        throw Exception('Document not found');
+      }
+
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      List<dynamic> tasks = data['tasks'];
+      print("qqqqqq getTodayTasksgetTodayTasksgetTodayTasks $tasks");
+
+      return tasks;
+
+       
+    } catch (e) {
+      // Handle the error
+      print('Error retrieving today tasks: $e');
+      return [];
+    }
+  }
+
+  //* Add new Task
+  Future<void> addTask(taskDetails) async {
     try {
       // Get the current user's ID
       final User? currentUser = _auth.currentUser;
