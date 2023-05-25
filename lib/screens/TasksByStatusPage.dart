@@ -1,90 +1,181 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-import '../widgets/taskcard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:faculty_flow/services/task.service.dart';
+import 'package:faculty_flow/widgets/taskcard.dart';
+import 'package:flutter/material.dart';
+import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:lottie/lottie.dart';
 
 class TasksByStatusPage extends StatefulWidget {
-  const TasksByStatusPage({super.key});
+  final String selectStatus;
+  const TasksByStatusPage({
+    required this.selectStatus,
+    super.key});
+
 
   @override
   State<TasksByStatusPage> createState() => _TasksByStatusPageState();
 }
 
 class _TasksByStatusPageState extends State<TasksByStatusPage> {
+  TaskService _taskService = TaskService();
+
+  var select;
+
+     void initState() {
+    super.initState();
+    // _fetchProfile();
+   select = widget.selectStatus;
+  }
+
+
+  var selectedDate = DateTime.now();
+  var firstDate = DateTime(2023, 1, 25);
+  var lastDate = DateTime.now().add(const Duration(days: 365 * 4));
+
+  List<Map<String, dynamic>> filterObjectsByDate(
+      objects, DateTime selectedDate) {
+    return objects.where((obj) {
+      var dat = obj['date'];
+      print("dat $dat ");
+      final dateTime = DateTime.fromMillisecondsSinceEpoch(
+          dat.microsecondsSinceEpoch ~/ 1000);
+      print("dateTime $dateTime ");
+      print("Selected Date $selectedDate");
+
+      return dateTime.year == selectedDate.year &&
+          dateTime.month == selectedDate.month &&
+          dateTime.day == selectedDate.day;
+    }).toList();
+  }
+
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        appBar: AppBar(
+          title: Text(select),
         ),
-        title: Text('Tasks'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Row(
+        body: SingleChildScrollView(
+          child: Column(
             children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
+              SizedBox(
+                height: 10,
               ),
-              SizedBox(width: 8.0),
-              IconButton(
-                icon: Icon(Icons.filter_list),
-                onPressed: () {
-                  // Filter icon onPressed action
-                },
+              CalendarTimeline(
+                initialDate: selectedDate,
+                firstDate: firstDate,
+                lastDate: lastDate,
+                onDateSelected: (date) => setState(() => selectedDate = date),
+                leftMargin: 20,
+                monthColor: Colors.blue.shade300,
+                dayColor: Colors.teal[200],
+                activeDayColor: Colors.white,
+                activeBackgroundDayColor: Color(0xFF7D88E7),
+                dotsColor: Colors.white,
+                // selectableDayPredicate: (date) => date.day != 23,
+                locale: 'en_ISO',
               ),
+              SizedBox(
+                height: 10,
+              ),
+              FutureBuilder(
+                  future: _taskService.getTodayTasks(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Display a loading spinner while waiting for data
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      // Display an error message if the future throws an error
+                      return Text("Error: ${snapshot.error}");
+                    } else {
+                      print("SNapshot $snapshot");
+                      print("SNapshot data ${snapshot.data} ");
+                      // print("index SNapshot data  ${snapshot.data[0]} ");
+                      // var tasksData = snapshot.data;
+                      // print("Tasks data ${tasksData['title']}");
+
+                      // List<Map<String, dynamic>> reqtasks =
+                      //     filterObjectsByDate(snapshot.data, selectedDate);
+                      var reqtasks = [];
+                      for (var task in snapshot.data) {
+                        var status = task['status'];
+
+                        print("status from fire ${status}");
+                        var date = task['date'];
+                        print("date from fire ${date}");
+                        var convertedDate = date.toDate();
+                        print("convertedDate from fire ${convertedDate}");
+
+                        var formatDate =
+                            DateFormat('yyyy-MM-dd').format(convertedDate);
+
+                        print("formatDate from fire ${formatDate}");
+                        print("Selected Date ${selectedDate}");
+
+                        var formatSelectedDate =
+                            DateFormat('yyyy-MM-dd').format(selectedDate);
+                        print(
+                            "formatSelectedDate from fire ${formatSelectedDate}");
+                        
+
+                        if ((status == select) && formatDate == formatSelectedDate) {
+                          reqtasks.add(task);
+                        }
+                      }
+
+                      print("reqtasks ${reqtasks}");
+
+                      if (reqtasks.length > 0) {
+                        return Column(
+                          children: [
+                            // Text("data")
+                            SizedBox(
+                              height: 700,
+                              width: double.infinity,
+                              child: Expanded(
+                                child: ListView.builder(
+                                    itemCount: reqtasks.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var taskdata = reqtasks[index];
+                                      return TaskCard(
+                                          label: taskdata['tag'],
+                                          title: taskdata['title'],
+                                          startTime: taskdata['startTime'],
+                                          endTime: taskdata['endTime']);
+                                    }),
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            Container(
+                              width: 350, // Set the desired width
+                              // height: 200, // Set the desired height
+                              child: Lottie.network(
+                                  'https://assets9.lottiefiles.com/private_files/lf30_lkquf6qz.json'), // Replace with your Lottie animation file path
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("No Tasks Found!",
+                                style: GoogleFonts.hindSiliguri(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15))
+                          ],
+                        );
+                      }
+                    }
+                  })
             ],
           ),
-        ),
-        SingleChildScrollView(
-          child: Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                TaskCard(
-                  label: 'Urgent',
-                  title: 'Complete Project Report',
-                  startTime: '9:00 AM',
-                  endTime: '11:30 AM',
-                ),
-                TaskCard(
-                  label: 'High',
-                  title: 'Meeting with Team',
-                  startTime: '2:00 PM',
-                  endTime: '3:00 PM',
-                ),
-                TaskCard(
-                  label: 'Normal',
-                  title: 'Send Progress Update',
-                  startTime: '4:30 PM',
-                  endTime: '5:00 PM',
-                ),
-                TaskCard(
-                  label: 'Low',
-                  title: 'Organize Files',
-                  startTime: '6:00 PM',
-                  endTime: '7:00 PM',
-                ),
-              ],
-            ),
-          ),
-        ),
-        ]
-      ),
-    );
+        ));
   }
 }

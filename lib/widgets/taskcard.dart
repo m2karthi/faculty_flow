@@ -91,6 +91,7 @@ class TaskCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8.0),
                   _buildLabel(label, labelColor),
+                  
                 ],
               ),
             ),

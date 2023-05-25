@@ -1,4 +1,6 @@
+import 'package:faculty_flow/screens/test.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked_notification_cards/stacked_notification_cards.dart';
 
 class MeetingPage extends StatefulWidget {
@@ -9,55 +11,23 @@ class MeetingPage extends StatefulWidget {
 }
 
 class _MeetingPageState extends State<MeetingPage> {
-  bool isCardSelected = false;
-  List<NotificationCard> _listOfNotification = [
-    NotificationCard(
-      date: DateTime.now(),
-      leading: Icon(
-        Icons.account_circle,
-        size: 48,
-      ),
-      title: 'user 1',
-      subtitle: 'Meeting Title: Meeting 1\nDate: 2023-05-23\nStart Time: 10:00 AM\nMeeting Type: Pending',
-    ),
-    NotificationCard(
-      date: DateTime.now().subtract(
-        const Duration(minutes: 4),
-      ),
-      leading: Icon(
-        Icons.account_circle,
-        size: 48,
-      ),
-      title: 'user2',
-      subtitle: 'Meeting Title: Meeting 2\nDate: 2023-05-23\nStart Time: 11:00 AM\nMeeting Type: Pending',
-    ),
-    NotificationCard(
-      date: DateTime.now().subtract(
-        const Duration(minutes: 10),
-      ),
-      leading: Icon(
-        Icons.account_circle,
-        size: 48,
-      ),
-      title: 'user3',
-      subtitle: 'Meeting Title: Meeting 3\nDate: 2023-05-23\nStart Time: 2:00 PM\nMeeting Type: Scheduled',
-    ),
-    NotificationCard(
-      date: DateTime.now().subtract(
-        const Duration(minutes: 30),
-      ),
-      leading: Icon(
-        Icons.account_circle,
-        size: 48,
-      ),
-      title: 'user4',
-      subtitle: 'Meeting Title: Meeting 4\nDate: 2023-05-23\nStart Time: 3:30 PM\nMeeting Type: Scheduled',
-    ),
-  ];
+  String status = 'Pending';
 
-  void toggleCardSelection() {
+  void acceptRequest() {
     setState(() {
-      isCardSelected = !isCardSelected;
+      status = 'Accepted';
+    });
+  }
+
+  void rejectRequest() {
+    setState(() {
+      status = 'Rejected';
+    });
+  }
+
+  void cancelRequest() {
+    setState(() {
+      status = 'Cancelled';
     });
   }
 
@@ -67,50 +37,91 @@ class _MeetingPageState extends State<MeetingPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StackedNotificationCards(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  blurRadius: 2.0,
-                ),
-              ],
-              notificationCardTitle: 'tasks',
-              notificationCards: [..._listOfNotification],
-              cardColor: Color(0xFFF1F1F1),
-              padding: 16,
-              actionTitle: Text(
-                'Notifications',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Appointments",
+                style: GoogleFonts.hindSiliguri(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 29,
+                  color: Colors.black,
                 ),
               ),
-              showLessAction: Text(
-                'Show less',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
+            ),
+            Card(
+              elevation: 2.0,
+              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Container(
+                height: 100.0,
+                padding: EdgeInsets.all(16.0),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://cdn-icons-png.flaticon.com/512/206/206865.png'),
+                  ),
+                  title: Text(
+                    'Title',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Description of the meeting (max 1 line)',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  trailing: Container(
+                    height:120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        
+                        Expanded(
+                          child: IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          leading: Icon(Icons.check),
+                                          title: Text('Accept'),
+                                          onTap: acceptRequest,
+                                        ),
+                                        ListTile(
+                                          leading: Icon(Icons.clear),
+                                          title: Text('Reject'),
+                                          onTap: rejectRequest,
+                                        ),
+                                        ListTile(
+                                          leading: Icon(Icons.cancel),
+                                          title: Text('Cancel'),
+                                          onTap: cancelRequest,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              onTapClearAll: () {
-                setState(() {
-                  _listOfNotification.clear();
-                });
-              },
-              clearAllNotificationsAction: Container(), // Remove the "X" mark
-              clearAllStacked: Text(''),
-              cardClearButton: Text('accept'),
-              cardViewButton: Text('reject'),
-              onTapClearCallback: (index) {
-                print(index);
-                setState(() {
-                  _listOfNotification.removeAt(index);
-                });
-              },
-              onTapViewCallback: (index) {
-                print(index);
-              },
             ),
           ],
         ),

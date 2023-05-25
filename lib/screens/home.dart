@@ -1,7 +1,11 @@
+import 'package:faculty_flow/screens/TasksByStatusPage.dart';
 import 'package:faculty_flow/services/profile.service.dart';
 import 'package:faculty_flow/services/task.service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:intl/intl.dart';
+
 
 import '../pallets/color.dart';
 import '../widgets/taskcard.dart';
@@ -100,9 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    print(
-                        "dddsccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
-                    // Navigator.pushNamed(context, '/tasksbystatus')
+                   Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TasksByStatusPage(selectStatus: 'Completed')),
+                    );
                   },
                   child: Card(
                       color: Color(0xFF7DC8E7),
@@ -138,39 +143,49 @@ class _HomeScreenState extends State<HomeScreen> {
                             ]),
                       )),
                 ),
-                Card(
-                    color: Color(0xFF7D88E7),
-                    elevation: 8,
-                    child: Container(
-                      width: 160,
-                      height: 158,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/onBoard-2.png'),
-                            ),
-                            Text(
-                              "Pending",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: Colors.white,
+                GestureDetector(
+                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TasksByStatusPage(selectStatus: 'Pending')),
+                    );
+                  },
+                  child: Card(
+                      color: Color(0xFF7D88E7),
+                      elevation: 8,
+                      child: Container(
+                        width: 160,
+                        height: 158,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage('assets/onBoard-2.png'),
                               ),
-                            ),
-                            Text(
-                              "16 Tasks",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.white,
+                              Text(
+                                "Pending",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                          ]),
-                    )),
+                              Text(
+                                "16 Tasks",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ]),
+                      )),
+                ),
               ],
             ),
             SizedBox(
@@ -180,72 +195,92 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Card(
-                    color: Color(0xFFE77D7D),
-                    elevation: 8,
-                    child: Container(
-                      width: 160,
-                      height: 158,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/onBoard-2.png'),
-                            ),
-                            Text(
-                              "Cancelled",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: Colors.white,
+                GestureDetector(
+                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TasksByStatusPage(selectStatus: 'Cancelled')),
+                    );
+                  },
+                  child: Card(
+                      color: Color(0xFFE77D7D),
+                      elevation: 8,
+                      child: Container(
+                        width: 160,
+                        height: 158,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage('assets/onBoard-2.png'),
                               ),
-                            ),
-                            Text(
-                              "16 Tasks",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.white,
+                              Text(
+                                "Cancelled",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                          ]),
-                    )),
-                Card(
-                    color: Color(0xFF81E89E),
-                    elevation: 8,
-                    child: Container(
-                      width: 160,
-                      height: 158,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/onBoard-2.png'),
-                            ),
-                            Text(
-                              "On Request",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: Color(0xFF12175E),
+                              Text(
+                                "16 Tasks",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "16 Tasks",
-                              style: GoogleFonts.hindSiliguri(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Color(0xFF12175E),
+                            ]),
+                      )),
+                ),
+                GestureDetector(
+                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TasksByStatusPage(selectStatus: 'OnRequest')),
+                    );
+                  },
+                  child: Card(
+                      color: Color(0xFF81E89E),
+                      elevation: 8,
+                      child: Container(
+                        width: 160,
+                        height: 158,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage('assets/onBoard-2.png'),
                               ),
-                            ),
-                          ]),
-                    )),
+                              Text(
+                                "On Request",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: Color(0xFF12175E),
+                                ),
+                              ),
+                              Text(
+                                "16 Tasks",
+                                style: GoogleFonts.hindSiliguri(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Color(0xFF12175E),
+                                ),
+                              ),
+                            ]),
+                      )),
+                ),
               ],
             ),
             SizedBox(
@@ -289,25 +324,74 @@ class _HomeScreenState extends State<HomeScreen> {
                       // var tasksData = snapshot.data;
                       // print("Tasks data ${tasksData['title']}");
 
+                      var selectedDate= DateTime.now();
+                     var reqtasks = [];
 
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 200,
-                            width: double.infinity,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  var taskdata = snapshot.data[index];
-                                  return TaskCard(
-                                      label: taskdata['tag'],
-                                      title: taskdata['title'],
-                                      startTime: taskdata['startTime'],
-                                      endTime: taskdata['endTime']);
-                                }),
-                          )
-                        ],
-                      );
+                      for (var task in snapshot.data) {
+                        var date = task['date'];
+                        print("date from fire ${date}");
+                        var convertedDate = date.toDate();
+                        print("convertedDate from fire ${convertedDate}");
+
+                        var formatDate = DateFormat('yyyy-MM-dd').format(convertedDate);
+
+                        print("formatDate from fire ${formatDate}");
+                        print("Selected Date ${selectedDate}");
+
+                        var formatSelectedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                        print(
+                            "formatSelectedDate from fire ${formatSelectedDate}");
+
+                        if (formatDate == formatSelectedDate) {
+                          reqtasks.add(task);
+                        }
+                      }
+
+                      print("reqtasks ${reqtasks}");
+
+                      if (reqtasks.length > 0) {
+                        return Column(
+                          children: [
+                            // Text("data")
+                            SizedBox(
+                              height: 200,
+                              width: double.infinity,
+                              child: Expanded(
+                                child: ListView.builder(
+                                    itemCount: reqtasks.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var taskdata = reqtasks[index];
+                                      return TaskCard(
+                                          label: taskdata['tag'],
+                                          title: taskdata['title'],
+                                          startTime: taskdata['startTime'],
+                                          endTime: taskdata['endTime']);
+                                    }),
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            Container(
+                              width: 350, // Set the desired width
+                              // height: 200, // Set the desired height
+                              child: Lottie.network(
+                                  'https://assets9.lottiefiles.com/private_files/lf30_lkquf6qz.json'), // Replace with your Lottie animation file path
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("No Tasks Found! Enjoy by adding new Tasks",
+                                style: GoogleFonts.hindSiliguri(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15))
+                          ],
+                        );
+                      }
                     }
                   }),
             )

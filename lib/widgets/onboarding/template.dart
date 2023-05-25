@@ -136,7 +136,7 @@ class ScreenTemp extends StatelessWidget {
           curve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 350),
           // home: NavBar(),
-          home: NavBar(),
+          home: LoginPage(),
         ),
         // back: const Back(child: Icon(Icons.arrow_back)),
       ),

@@ -25,7 +25,7 @@ class _TasksPageState extends State<TasksPage> {
   // }
 
   var selectedDate = DateTime.now();
-  var firstDate = DateTime.now();
+  var firstDate = DateTime(2023, 1, 25);
   var lastDate = DateTime.now().add(const Duration(days: 365 * 4));
 
   List<Map<String, dynamic>> filterObjectsByDate(
