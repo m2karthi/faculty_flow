@@ -1,5 +1,6 @@
 import 'package:faculty_flow/screens/addTask.dart';
 import 'package:faculty_flow/screens/appointment.dart';
+import 'package:faculty_flow/screens/appointment/appointmentScreen.dart';
 import 'package:faculty_flow/screens/calender.dart';
 import 'package:faculty_flow/screens/journal.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,17 +17,16 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-
-    int currentPage = 0;
-  List<Widget> pages =  [
+  int currentPage = 0;
+  List<Widget> pages = [
     HomeScreen(),
-    MeetingPage(),
+    Appointmentpage(),
+    // MeetingPage(),
     AddTaskPage(),
     Calender(),
     JournalPage()
-    // TasksByStatusPage(),
-    
 
+    // TasksByStatusPage(),
   ];
   void onItemTapped(int index) {
     setState(() {
@@ -34,11 +34,11 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  int selectedIndex = 0; 
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           // title: Text('Faculty Flow', style: TextStyle(
           //             color: Colors.black,
           //             fontWeight: FontWeight.w600,
@@ -83,7 +83,6 @@ class _NavBarState extends State<NavBar> {
         ),
         body: Center(
           child: pages.elementAt(selectedIndex),
-          
         ),
         bottomNavigationBar: Container(
           clipBehavior:
