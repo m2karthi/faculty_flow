@@ -1,3 +1,4 @@
+import 'package:faculty_flow/file/calander.dart';
 import 'package:faculty_flow/screens/addTask.dart';
 import 'package:faculty_flow/screens/appointment.dart';
 import 'package:faculty_flow/screens/appointment/appointmentScreen.dart';
@@ -23,7 +24,8 @@ class _NavBarState extends State<NavBar> {
     Appointmentpage(),
     // MeetingPage(),
     AddTaskPage(),
-    Calender(),
+    // Calender(),
+    CalanderScreen(),
     JournalPage()
 
     // TasksByStatusPage(),
