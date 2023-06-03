@@ -4,6 +4,7 @@ import 'package:faculty_flow/screens/appointment.dart';
 import 'package:faculty_flow/screens/appointment/appointmentScreen.dart';
 import 'package:faculty_flow/screens/calender.dart';
 import 'package:faculty_flow/screens/journal.dart';
+import 'package:faculty_flow/screens/pdf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,8 @@ class _NavBarState extends State<NavBar> {
     // MeetingPage(),
     AddTaskPage(),
     // Calender(),
-    CalanderScreen(),
+    // CalanderScreen(),
+    PdfView(),
     JournalPage()
 
     // TasksByStatusPage(),
